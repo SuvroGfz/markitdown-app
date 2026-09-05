@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MarkItDown — PDF to Markdown Converter</title>
+    <meta name="description" content="Convert PDFs to clean Markdown to reduce LLM token consumption.">
+    <link rel="stylesheet" href="index.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="gradient-text">MarkItDown</h1>
+            <p class="tagline">Convert PDFs to clean Markdown — save LLM tokens</p>
+        </header>
+
+        <main>
+            <!-- Upload Zone -->
+            <div id="upload-zone" class="glass-card">
+                <div class="upload-content">
+                    <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    <h2>Drag & Drop your PDF here</h2>
+                    <p class="hint">or <button id="browse-btn" class="text-button">browse files</button></p>
+                    <div class="file-limits">
+                        <span class="badge">.pdf</span>
+                        <span class="badge">Max 10MB</span>
+                    </div>
+                </div>
+                <input type="file" id="file-input" accept="application/pdf" hidden>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loading-state" class="glass-card hidden">
+                <div class="spinner"></div>
+                <p class="pulse-text">Converting...</p>
+            </div>
+
+            <!-- Error State -->
+            <div id="error-state" class="glass-card error-card hidden">
+                <svg class="error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                <h3 id="error-message">An error occurred</h3>
+                <button id="retry-btn" class="btn primary-btn">Try Again</button>
+            </div>
+
+            <!-- Result Panel -->
+            <div id="result-panel" class="hidden">
+                <div class="stats-bar glass-card">
+                    <div class="stat">
+                        <span class="stat-label">File Size</span>
+                        <span id="stat-size" class="stat-value">-</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Processing</span>
+                        <span id="stat-time" class="stat-value">-</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Tokens</span>
+                        <span id="stat-tokens" class="stat-value">-</span>
+                    </div>
+                </div>
+
+                <div class="result-card glass-card">
+                    <div class="tabs">
+                        <button class="tab-btn active" data-tab="preview">Preview</button>
+                        <button class="tab-btn" data-tab="raw">Raw Markdown</button>
+                    </div>
+                    
+                    <div class="content-area">
+                        <div id="preview-content" class="tab-content active markdown-body"></div>
+                        <pre id="raw-content" class="tab-content"><code></code></pre>
+                    </div>
+
+                    <div class="action-bar">
+                        <button id="convert-another-btn" class="btn secondary-btn">Convert Another</button>
+                        <div class="primary-actions">
+                            <button id="copy-btn" class="btn secondary-btn">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                Copy
+                            </button>
+                            <button id="download-btn" class="btn primary-btn">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                                Download .md
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="toast" class="toast hidden">Copied to clipboard!</div>
+
+    <script src="app.js"></script>
+</body>
+</html>
