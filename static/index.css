@@ -681,6 +681,10 @@ body {
   .hero-title {
     font-size: 40px;
   }
+  .nav-links {
+    gap: var(--space-1);
+  }
+  .nav-tab svg { display: none; }
 }
 
 @media (max-width: 480px) {
@@ -703,4 +707,367 @@ body {
   }
   .tabs .tab[data-tab="preview"]::before { content: "👁"; }
   .tabs .tab[data-tab="raw"]::before { content: "📝"; }
+}
+
+/* ── Nav Tabs ── */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.nav-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-family: var(--font-sans);
+  border: none;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s var(--ease-snappy);
+}
+.nav-tab:hover {
+  color: var(--text-primary);
+  background: var(--bg-surface-hover);
+}
+.nav-tab.active {
+  color: var(--text-primary);
+  background: var(--bg-surface-active);
+}
+
+/* ── Page Switching ── */
+.page {
+  display: none;
+  width: 100%;
+  padding-bottom: var(--space-16);
+  animation: fadeIn 0.6s var(--ease-snappy) forwards;
+}
+.page.active { display: block; }
+
+/* ── MCP Setup Page ── */
+.mcp-container {
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.mcp-hero {
+  text-align: center;
+  margin-top: var(--space-8);
+  margin-bottom: var(--space-4);
+}
+
+.mcp-title {
+  font-size: 48px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: var(--space-4);
+  background: var(--brand-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.mcp-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: var(--space-6);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+.mcp-card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+  color: var(--accent-purple);
+}
+.mcp-card-header h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.mcp-card-desc {
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: var(--space-4);
+}
+.mcp-card-desc code {
+  background: var(--bg-surface-active);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: var(--font-code);
+  font-size: 13px;
+  color: var(--accent-purple);
+}
+
+/* Code Blocks */
+.code-block-wrapper {
+  margin-bottom: var(--space-4);
+}
+.code-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-2);
+}
+.code-block {
+  position: relative;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  padding: var(--space-3) var(--space-4);
+  font-family: var(--font-code);
+  font-size: 13px;
+  color: var(--accent-blue);
+  overflow-x: auto;
+}
+.code-block-lg {
+  padding: var(--space-4);
+  color: var(--text-secondary);
+}
+.code-block-lg pre {
+  font-family: var(--font-code);
+  font-size: 13px;
+  line-height: 1.6;
+  white-space: pre;
+  margin: 0;
+}
+.copy-code-btn {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  background: var(--bg-surface-hover);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 6px;
+  cursor: pointer;
+  color: var(--text-tertiary);
+  transition: all 0.2s var(--ease-snappy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.copy-code-btn:hover {
+  color: var(--text-primary);
+  background: var(--bg-surface-active);
+  border-color: var(--border-strong);
+}
+.copy-code-btn.copied {
+  color: var(--accent-success);
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+/* Config path helper */
+.config-path {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 13px;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-2);
+}
+.config-path code {
+  background: var(--bg-surface-active);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: var(--font-code);
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* Status Indicator */
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: var(--space-2);
+}
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-tertiary);
+  transition: background 0.3s;
+}
+.status-indicator.online .status-dot {
+  background: var(--accent-success);
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+}
+.status-indicator.offline .status-dot {
+  background: var(--accent-error);
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
+}
+
+/* Tool Documentation */
+.tool-card {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+.tool-card:last-child { margin-bottom: 0; }
+
+.tool-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+.tool-name {
+  font-family: var(--font-code);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--accent-blue);
+}
+.tool-badge {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  background: rgba(168, 85, 247, 0.1);
+  color: var(--accent-purple);
+  border: 1px solid rgba(168, 85, 247, 0.2);
+}
+.tool-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-4);
+}
+
+.tool-params, .tool-returns {
+  margin-top: var(--space-3);
+}
+.tool-params h4, .tool-returns h4 {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-2);
+}
+.tool-returns p {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+.tool-returns code {
+  background: var(--bg-surface-active);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: var(--font-code);
+  font-size: 12px;
+  color: var(--accent-purple);
+}
+
+.param-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.param-row:last-child { border-bottom: none; }
+.param-name {
+  font-family: var(--font-code);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  background: var(--bg-surface-active);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.param-type {
+  font-size: 12px;
+  color: var(--accent-blue);
+  font-family: var(--font-code);
+}
+.param-required {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent-error);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.param-optional {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.param-desc {
+  width: 100%;
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* Deploy Steps */
+.deploy-steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.step {
+  display: flex;
+  gap: var(--space-4);
+  align-items: flex-start;
+}
+.step-num {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  border-radius: 50%;
+  background: var(--brand-gradient);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+}
+.step-content h4 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: var(--space-1);
+}
+.step-content p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+.step-content a {
+  color: var(--accent-purple);
+  text-decoration: none;
+  font-weight: 500;
+}
+.step-content a:hover {
+  text-decoration: underline;
+}
+.step-content code {
+  background: var(--bg-surface-active);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: var(--font-code);
+  font-size: 12px;
+  color: var(--accent-purple);
 }

@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from app.converter import convert_pdf, count_tokens
+from app.mcp_server import mcp
 
 app = FastAPI(
     title="MarkItDown API",
@@ -26,7 +27,7 @@ ALLOWED_EXTENSIONS = {".pdf"}
 
 @app.get("/api/health")
 async def health_check():
-    return {"status": "ok", "version": "1.0.0"}
+    return {"status": "ok", "version": "1.0.0", "mcp": True}
 
 
 @app.post("/api/convert")
@@ -73,6 +74,10 @@ async def convert_endpoint(file: UploadFile = File(...)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
 
+
+# Mount MCP SSE endpoint
+mcp_app = mcp.sse_app()
+app.mount("/mcp", mcp_app)
 
 # Static files served last so API routes take priority
 static_dir = Path(__file__).parent.parent / "static"

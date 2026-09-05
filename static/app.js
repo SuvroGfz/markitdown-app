@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
   initThreeJs();
   initAppLogic();
+  initPageNav();
+  initMCPPage();
 });
 
 function initThreeJs() {
@@ -353,3 +355,115 @@ function initAppLogic() {
     }
   });
 });
+
+/* ── Page Navigation ── */
+function initPageNav() {
+  const navTabs = document.querySelectorAll('.nav-tab');
+  const mainContent = document.querySelector('.main-content');
+  const heroSection = document.getElementById('hero-section');
+  const mcpPage = document.getElementById('mcp-setup-page');
+
+  navTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const page = tab.dataset.page;
+
+      // Update active tab
+      navTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+
+      if (page === 'converter') {
+        mainContent.style.display = 'flex';
+        heroSection.style.display = 'block';
+        mcpPage.classList.remove('active');
+      } else if (page === 'mcp-setup') {
+        mainContent.style.display = 'none';
+        mcpPage.classList.add('active');
+      }
+    });
+  });
+}
+
+/* ── MCP Setup Page ── */
+function initMCPPage() {
+  const baseUrl = window.location.origin;
+  const sseUrl = baseUrl + '/mcp/sse';
+
+  // Populate SSE URL
+  const sseUrlEl = document.getElementById('sse-url');
+  if (sseUrlEl) sseUrlEl.textContent = sseUrl;
+
+  // Claude Desktop config
+  const claudeConfig = document.getElementById('claude-config');
+  if (claudeConfig) {
+    claudeConfig.textContent = JSON.stringify({
+      "mcpServers": {
+        "markitdown": {
+          "url": sseUrl
+        }
+      }
+    }, null, 2);
+  }
+
+  // Cursor / generic SSE config
+  const cursorConfig = document.getElementById('cursor-config');
+  if (cursorConfig) {
+    cursorConfig.textContent = JSON.stringify({
+      "mcpServers": {
+        "markitdown": {
+          "url": sseUrl,
+          "transport": "sse"
+        }
+      }
+    }, null, 2);
+  }
+
+  // Copy code buttons
+  document.querySelectorAll('.copy-code-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const targetId = btn.dataset.target;
+      const targetEl = document.getElementById(targetId);
+      if (!targetEl) return;
+
+      try {
+        await navigator.clipboard.writeText(targetEl.textContent);
+        btn.classList.add('copied');
+        setTimeout(() => btn.classList.remove('copied'), 2000);
+      } catch {
+        // Fallback
+        const range = document.createRange();
+        range.selectNodeContents(targetEl);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+        document.execCommand('copy');
+        sel.removeAllRanges();
+        btn.classList.add('copied');
+        setTimeout(() => btn.classList.remove('copied'), 2000);
+      }
+    });
+  });
+
+  // Check MCP server health
+  checkMCPHealth();
+}
+
+async function checkMCPHealth() {
+  const statusEl = document.getElementById('mcp-status');
+  if (!statusEl) return;
+
+  try {
+    const resp = await fetch('/api/health');
+    if (resp.ok) {
+      const data = await resp.json();
+      if (data.mcp) {
+        statusEl.classList.add('online');
+        statusEl.classList.remove('offline');
+        statusEl.querySelector('span').textContent = 'MCP server is online and ready';
+      }
+    }
+  } catch {
+    statusEl.classList.add('offline');
+    statusEl.classList.remove('online');
+    statusEl.querySelector('span').textContent = 'MCP server is offline';
+  }
+}
