@@ -354,7 +354,7 @@ function initAppLogic() {
       URL.revokeObjectURL(url);
     }
   });
-});
+}
 
 /* ── Page Navigation ── */
 function initPageNav() {
@@ -428,7 +428,7 @@ function initMCPPage() {
         await navigator.clipboard.writeText(targetEl.textContent);
         btn.classList.add('copied');
         setTimeout(() => btn.classList.remove('copied'), 2000);
-      } catch {
+      } catch (e) {
         // Fallback
         const range = document.createRange();
         range.selectNodeContents(targetEl);
@@ -461,7 +461,7 @@ async function checkMCPHealth() {
         statusEl.querySelector('span').textContent = 'MCP server is online and ready';
       }
     }
-  } catch {
+  } catch (e) {
     statusEl.classList.add('offline');
     statusEl.classList.remove('online');
     statusEl.querySelector('span').textContent = 'MCP server is offline';
